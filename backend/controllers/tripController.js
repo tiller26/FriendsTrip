@@ -33,7 +33,7 @@ const createTrip = async (req, res) => {
         // Create a new trip
         const newTrip = new tripModel({ organiser, startDate, endDate, lArrivalTime, lDepartureTime, dArrivalTime, dDepartureTime })
         await newTrip.save()
-        res.json({success:true, message: "You created the trip successfully"})
+        res.json({success:true, message: "You created the trip successfully", message: newTrip._id})
 
     } catch (error) {
         console.log(error)

@@ -26,8 +26,8 @@ const tripSchema = new mongoose.Schema(
           {
             title: { type: String, required: true },
             description: String,
-            startTime: { type: Date, required: true },
-            endTime: { type: Date, required: true},
+            startTime: { type: String, required: true },
+            endTime: { type: String, required: true},
             date: { type: Date, required: true},
             cost: { type: String, required: true}
           },

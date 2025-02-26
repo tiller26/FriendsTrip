@@ -1,4 +1,5 @@
 import tripModel from "../models/tripModel.js";
+import mongoose from "mongoose";
 
 const createActivity = async (req, res) => {
     try {
@@ -50,11 +51,64 @@ const createActivity = async (req, res) => {
 }
 
 const getActivity = async (req, res) => {
+    try {
+        // get the user Id 
+    const userId = req.user.id;
+
+    // Get the activity Id 
+    const {activityId} = req.params;
+
+    // Validate if activityId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(activityId)) {
+        return res.status(400).json({ success: false, message: "Invalid activity ID format." });
+    }
+
+    // Find the trip for the activity
+    const trip = await tripModel.findOne({
+        "activities._id": activityId,
+        $or: [{ organiser: userId }, { participants: userId}],
+    }).populate("organiser", "userName").populate("participants", "userName");
+
+    const activity = trip.activities.id(activityId);
+
+    res.json({ success: true, activity})
+
+    } catch (error) {
+        console.log(error)
+        res.json({success:false, message:error.message})
+    }
+    
 
 }
 
 const getActivities = async (req, res) => {
+   try {
+    // Get the user Id.
+    const userId = req.user.id;
+
+    // Get the trip id.
+    const {tripId} = req.params;
+
+    // Validate if tripId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(tripId)) {
+        return res.status(400).json({ success: false, message: "Invalid trip ID format." });
+    }
+
+    // Get the trip using the the trip Id.
+    const trip = await tripModel.findOne({
+        _id: tripId,
+        $or: [{ organiser: userId }, { participants: userId}],
+    });
+
+    const activities = trip.activities;
+
+    res.json({ success:true , activities})
+    
+   } catch (error) {
+     console.log(error);
+     res.json({ success:false, message:error.message })
+   }
     
 }
 
-export {createActivity, getActivity, getActivities, }
+export { createActivity, getActivity, getActivities }

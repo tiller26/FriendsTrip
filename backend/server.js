@@ -24,7 +24,7 @@ app.use(cors())
 app.use('/api/user', userRouter)
 app.use('/api/trip', tripRouter)
 app.use('/api/trip/:tripId/activity', activityRouter)
-app.use('/api/trip/:tripId/cost', costRouter)
+app.use('/api/trip/cost', costRouter)
 
 
 app.get('/', (req,res)=>{

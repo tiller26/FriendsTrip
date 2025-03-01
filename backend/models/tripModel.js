@@ -48,7 +48,7 @@ const tripSchema = new mongoose.Schema(
 
       costs: {
         travel: { type: String},
-        accomodation: { type: String},
+        accommodation: { type: String},
         food: { type: String},
         activities: { type: String}
       }
